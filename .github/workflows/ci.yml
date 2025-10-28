@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-and-test-frontend:
+    name: Frontend - Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint --filter=web
+
+      - name: Type check
+        run: npm run type-check --filter=web
+
+      - name: Run tests
+        run: npm run test --filter=web
+
+      - name: Build
+        run: npm run build --filter=web
+
+  lint-and-test-backend:
+    name: Backend - Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          cd apps/api
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: Lint with ruff
+        run: |
+          cd apps/api
+          pip install ruff
+          ruff check .
+
+      - name: Type check with mypy
+        run: |
+          cd apps/api
+          pip install mypy
+          mypy . --ignore-missing-imports
+
+      - name: Run tests
+        run: |
+          cd apps/api
+          pip install pytest pytest-asyncio
+          pytest
+
+  docker-build:
+    name: Docker - Build Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Web Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/web.Dockerfile
+          push: false
+          tags: boltflow-web:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build API Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/api.Dockerfile
+          push: false
+          tags: boltflow-api:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

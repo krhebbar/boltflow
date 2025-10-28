@@ -1,0 +1,84 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+*.test.result
+
+# Turbo
+.turbo/
+
+# Debug
+*.cpuprofile
+*.heapsnapshot
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Docker
+.dockerignore
+
+# Production
+.vercel
+.netlify
+
+# Misc
+.eslintcache
+playwright-report/
+test-results/
+
+# Portfolio tracking (keep private)
+PORTFOLIO_STATUS.md
+
+# Scraped data (local only)
+scraped/**
+uploads/**
+generated/**
