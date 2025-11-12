@@ -1,6 +1,6 @@
 # ⚡ Boltflow - AI-Driven Web Migration System
 
-**Transform legacy websites into modern, production-ready web applications using AI**
+**Transform legacy websites into modern web applications using AI**
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
@@ -11,7 +11,7 @@
 
 ## 🎯 Overview
 
-Boltflow is a production-grade AI system that automates the migration of existing websites or design exports into fully functional, modern Next.js + React applications with headless CMS integration and automated deployment.
+Boltflow is an experimental AI system that automates the migration of existing websites or design exports into fully functional, modern Next.js + React applications with headless CMS integration and automated deployment.
 
 ### Key Features
 
@@ -27,21 +27,24 @@ Boltflow is a production-grade AI system that automates the migration of existin
 
 ## 🏗️ Architecture
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                    BOLTFLOW ARCHITECTURE                      │
-│                                                               │
-│  ┌─────────────┐   ┌──────────┐   ┌──────────┐   ┌─────────┐│
-│  │  Scraper    │──▶│    AI    │──▶│Generator │──▶│ Deploy  ││
-│  │  Engine     │   │ Analyzer │   │  Engine  │   │ Engine  ││
-│  └─────────────┘   └──────────┘   └──────────┘   └─────────┘│
-│         │               │               │              │      │
-│      Playwright     OpenAI GPT-4    React+ShadCN   Vercel   │
-│                                                               │
-│  ┌───────────────────────────────────────────────────────────┤
-│  │          Real-Time WebSocket Orchestration               │
-│  └──────────────────────────────────────────────────────────┘│
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+graph LR
+    subgraph "BOLTFLOW ARCHITECTURE"
+        A[Scraper Engine<br/>Playwright] --> B[AI Analyzer<br/>OpenAI GPT-4]
+        B --> C[Generator Engine<br/>React+ShadCN]
+        C --> D[Deploy Engine<br/>Vercel]
+
+        A -.->|Progress| WS[Real-Time WebSocket<br/>Orchestration]
+        B -.->|Progress| WS
+        C -.->|Progress| WS
+        D -.->|Progress| WS
+    end
+
+    style A fill:#e3f2fd
+    style B fill:#f3e5f5
+    style C fill:#e8f5e9
+    style D fill:#fff3e0
+    style WS fill:#fce4ec
 ```
 
 ---
@@ -52,6 +55,7 @@ Boltflow is a production-grade AI system that automates the migration of existin
 
 - Node.js >= 20.0.0
 - Python >= 3.11 (for FastAPI backend)
+- PostgreSQL (for database)
 - Redis (or Docker)
 - OpenAI API key
 
@@ -59,14 +63,18 @@ Boltflow is a production-grade AI system that automates the migration of existin
 
 ```bash
 # Clone the repository
-git clone https://github.com/krhebbar/boltflow-modern.git
-cd boltflow-modern
+git clone https://github.com/krhebbar/boltflow.git
+cd boltflow
 
 # Run the setup script
 ./scripts/setup.sh
 
-# Add your OpenAI API key
-echo "OPENAI_API_KEY=sk-your-key-here" >> .env
+# Configure environment variables
+cp .env.example .env
+# Edit .env and add your credentials:
+# - DATABASE_URL
+# - OPENAI_API_KEY
+# - SECRET_KEY
 
 # Start development servers
 ./scripts/dev.sh
@@ -90,8 +98,8 @@ boltflow/
 │   ├── web/              # Next.js 14 dashboard (App Router)
 │   └── api/              # FastAPI backend for AI pipelines
 ├── packages/
+│   ├── db/               # Database schema (Drizzle ORM + SQLAlchemy)
 │   ├── ui/               # Shared ShadCN component library
-│   ├── db/               # Database schema (Drizzle ORM)
 │   ├── cms/              # CMS connectors (Supabase/Sanity/etc)
 │   └── generators/       # Code generation templates
 ├── docs/                 # Documentation
@@ -108,31 +116,52 @@ boltflow/
 - **TypeScript 5.3** - Type safety
 - **ShadCN UI** - Modern component library (Radix + Tailwind)
 - **Tailwind CSS** - Utility-first styling
-- **Framer Motion** - Animations
 - **TanStack Query** - Server state management
 - **Socket.io** - Real-time updates
 
 ### Backend
 - **FastAPI** (Python) - AI/ML processing
-- **tRPC** - Type-safe API layer
-- **BullMQ** - Job queue (Redis)
+- **SQLAlchemy** - ORM with PostgreSQL
+- **Redis** - Job queue and caching
 - **Playwright** - Web scraping
 
 ### AI/ML
 - **OpenAI GPT-4 Turbo** - Structural analysis
 - **Text Embeddings** - Component similarity
-- **Langchain** - AI workflow orchestration
 
 ### Infrastructure
-- **Supabase** - PostgreSQL, Auth, Storage, Realtime
-- **Redis** (Upstash) - Cache, queue, pub/sub
-- **Vercel** - Edge deployment
+- **PostgreSQL** - Primary database
+- **Redis** - Cache, queue, pub/sub
 - **Docker** - Containerization
-- **GitHub Actions** - CI/CD
 
 ---
 
 ## 🔄 How It Works
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Dashboard
+    participant API
+    participant Scraper
+    participant AI
+    participant Generator
+    participant Database
+
+    User->>Dashboard: Submit URL
+    Dashboard->>API: POST /api/scraper/start
+    API->>Database: Create Project & Job
+    API->>Scraper: Start scraping
+    Scraper-->>Dashboard: WebSocket Progress
+    Scraper->>Database: Save scraped pages
+    Scraper->>AI: Analyze HTML/CSS
+    AI-->>Dashboard: Analysis Progress
+    AI->>Database: Save analysis results
+    AI->>Generator: Generate components
+    Generator-->>Dashboard: Generation Progress
+    Generator->>Database: Save components
+    Generator->>Dashboard: Complete!
+```
 
 ### 1. Web Scraping
 ```typescript
@@ -192,7 +221,7 @@ await deploy.toVercel({
 - Semantic similarity search
 
 ### Multi-CMS Support
-- **Supabase** - Native GraphQL
+- **Supabase** - PostgreSQL + Realtime
 - **Sanity** - GROQ queries
 - **Hygraph** - GraphQL API
 - **Strapi** - REST + GraphQL
@@ -243,29 +272,38 @@ npm run test
 ## 📚 Documentation
 
 - [Architecture](./docs/ARCHITECTURE.md) - System design and patterns
-- [API Documentation](./docs/API.md) - REST and GraphQL endpoints
-- [CMS Integration](./docs/CMS_INTEGRATION.md) - Adding new CMS connectors
+- [API Documentation](./docs/API.md) - REST and WebSocket endpoints
 - [Deployment](./docs/DEPLOYMENT.md) - Production deployment guide
+- [Implementation Status](./IMPLEMENTATION_STATUS.md) - Current implementation details
+- [Code Review](./CODE_REVIEW_REPORT.md) - Comprehensive code review
 
 ---
 
 ## 📈 Project Status
 
-**Current Status:** ✅ Core Implementation Complete
+**Current Status:** 🚧 In Active Development
 
+### Completed ✅
 - [x] Project setup (Turborepo, Next.js 14)
+- [x] **Authentication system with JWT**
+- [x] **Database layer with PostgreSQL**
+- [x] **Complete error handling**
+- [x] **State management with TanStack Query**
+- [x] **WebSocket real-time updates**
 - [x] Web scraping engine (Playwright)
-- [x] Dashboard UI with real-time updates
-- [x] AI analysis pipeline (GPT-4 + Embeddings)
-- [x] Quote & pricing engine
-- [x] Real-time WebSocket orchestration
-- [x] Component generation engine
-- [x] Multi-CMS integration layer
+- [x] Dashboard UI foundation
+- [x] AI analysis pipeline (GPT-4)
 - [x] Docker configuration
 - [x] Setup scripts and automation
 - [x] Comprehensive documentation
 
-**Future Enhancements:**
+### In Progress 🚧
+- [ ] Component generation engine
+- [ ] Multi-CMS integration layer
+- [ ] Testing infrastructure
+- [ ] Monitoring and observability
+
+### Future Enhancements 🔮
 - [ ] GitHub integration for automatic repo creation
 - [ ] VS Code extension
 - [ ] Automated testing generation
@@ -273,6 +311,10 @@ npm run test
 - [ ] Multi-language support
 - [ ] CLI tool
 - [ ] Production deployment examples
+
+**Production Readiness:** ~55/100 (improving rapidly)
+
+See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for detailed progress.
 
 ---
 
@@ -294,4 +336,4 @@ MIT License - see [LICENSE](./LICENSE) for details.
 
 ---
 
-**Built with ❤️ using production-grade full-stack engineering**
+**Built with ❤️ as an experimental open-source project**

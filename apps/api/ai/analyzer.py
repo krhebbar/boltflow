@@ -1,13 +1,13 @@
 """AI DOM Analyzer using OpenAI GPT-4"""
 import os
-from typing import Dict, List, Any
+from typing import Dict, Any, Optional
 from openai import AsyncOpenAI
 
 class DOMAnalyzer:
     def __init__(self):
         self.client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    
-    async def analyze(self, html: str, css: str = None) -> Dict[str, Any]:
+
+    async def analyze(self, html: str, css: Optional[str] = None) -> Dict[str, Any]:
         """Analyze HTML structure with GPT-4"""
         
         prompt = f"""

@@ -1,7 +1,7 @@
 """CMS Router - Multi-CMS integration endpoints"""
 from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import Literal, Dict, Any, List
+from typing import Literal, Dict, Any
 
 router = APIRouter()
 

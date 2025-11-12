@@ -1,7 +1,6 @@
 """Playwright-based web scraper"""
-from playwright.async_api import async_playwright, Browser, Page
+from playwright.async_api import async_playwright, Browser
 from typing import Callable, Optional, Dict, Any
-import asyncio
 
 class PlaywrightScraper:
     def __init__(self, job_id: str):
