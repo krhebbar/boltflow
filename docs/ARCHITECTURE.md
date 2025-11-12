@@ -2,7 +2,7 @@
 
 ## Overview
 
-Boltflow is a production-grade AI-driven web migration system that transforms legacy websites into modern Next.js applications with automated component generation, CMS integration, and deployment.
+Boltflow is an experimental AI-driven web migration system that transforms legacy websites into modern Next.js applications with automated component generation, CMS integration, and deployment.
 
 ## System Architecture
 

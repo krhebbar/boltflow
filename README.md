@@ -1,6 +1,6 @@
 # ⚡ Boltflow - AI-Driven Web Migration System
 
-**Transform legacy websites into modern, production-ready web applications using AI**
+**Transform legacy websites into modern web applications using AI**
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
@@ -11,7 +11,7 @@
 
 ## 🎯 Overview
 
-Boltflow is a production-grade AI system that automates the migration of existing websites or design exports into fully functional, modern Next.js + React applications with headless CMS integration and automated deployment.
+Boltflow is an experimental AI system that automates the migration of existing websites or design exports into fully functional, modern Next.js + React applications with headless CMS integration and automated deployment.
 
 ### Key Features
 
@@ -336,4 +336,4 @@ MIT License - see [LICENSE](./LICENSE) for details.
 
 ---
 
-**Built with ❤️ using production-grade full-stack engineering**
+**Built with ❤️ as an experimental open-source project**
