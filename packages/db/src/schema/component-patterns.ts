@@ -1,5 +1,4 @@
 import { pgTable, uuid, text, timestamp, real } from 'drizzle-orm/pg-core'
-import { sql } from 'drizzle-orm'
 
 export const componentPatterns = pgTable('component_patterns', {
   id: uuid('id').defaultRandom().primaryKey(),

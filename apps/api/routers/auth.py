@@ -1,5 +1,4 @@
 """Authentication router - login, signup, etc."""
-from datetime import timedelta
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,7 +6,6 @@ from sqlalchemy import select
 
 from models.user import User
 from config.database import get_db
-from config.settings import settings
 from lib.auth import (
     verify_password,
     get_password_hash,

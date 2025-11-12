@@ -1,5 +1,5 @@
 """Component Classifier using embeddings"""
-from typing import List, Dict, Any
+from typing import List, Dict
 from openai import AsyncOpenAI
 import os
 

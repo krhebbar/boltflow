@@ -7,7 +7,7 @@ import { NewProjectDialog } from "./new-project-dialog"
 
 export function ProjectList() {
   const [showNewProject, setShowNewProject] = useState(false)
-  const [projects, setProjects] = useState([
+  const [projects] = useState([
     // Demo data - in production this would come from API/database
     {
       id: "1",

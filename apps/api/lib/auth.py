@@ -1,10 +1,9 @@
 """Authentication and authorization utilities"""
-import os
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -64,9 +63,9 @@ async def get_current_user(
 
     try:
         payload = decode_token(token)
-        user_id: str = payload.get("sub")
+        user_id = payload.get("sub")
 
-        if user_id is None:
+        if not user_id or not isinstance(user_id, str):
             raise AuthenticationError("Invalid token payload")
 
     except JWTError:

@@ -50,8 +50,8 @@ async def generate_code(request: GenerateRequest):
 def generate_react_component(component: Dict, ui_library: str) -> str:
     """Convert HTML component to React with ShadCN UI"""
     comp_type = component['type']
-    html = component['html']
-    
+    # TODO: Parse and convert HTML to React JSX (component['html'])
+
     # Template for React component
     template = f'''
 import {{ Card }} from "@/components/ui/card"

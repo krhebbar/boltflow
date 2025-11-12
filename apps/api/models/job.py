@@ -1,5 +1,4 @@
 """Job model"""
-from datetime import datetime
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Text
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import relationship

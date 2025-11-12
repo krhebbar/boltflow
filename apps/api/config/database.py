@@ -1,9 +1,6 @@
 """Database configuration and session management"""
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from models.base import Base

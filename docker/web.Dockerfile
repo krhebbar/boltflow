@@ -6,12 +6,12 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Copy package files
-COPY package.json turbo.json ./
+COPY package.json package-lock.json turbo.json ./
 COPY apps/web/package.json apps/web/package.json
 COPY packages ./packages
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Rebuild the source code only when needed
 FROM base AS builder
